@@ -1,0 +1,15 @@
+Package: appmayors
+Title: Appointed Mayors reproducibility package
+Version: 0.0.0.9000
+Authors@R: 
+    person(given = "Mario",
+           family = "Remígio",
+           role = c("aut", "cre"),
+           email = "mario.remigio@gmail.com",
+           comment = c(ORCID = "https://orcid.org/0000-0002-9492-4938"))
+Description: This package contains the functions and data needed to reproduce the Appointed Mayors paper main results.
+License: MIT + file LICENSE
+Encoding: UTF-8
+LazyData: true
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.1.1
