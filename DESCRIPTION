@@ -16,6 +16,14 @@ RoxygenNote: 7.1.1
 URL: https://github.com/marioremigio95/appmayors
 BugReports: https://github.com/marioremigio95/appmayors/issues
 Imports: 
+    dplyr,
+    janitor,
+    magrittr,
     purrr,
+    readr,
     rio,
-    stringr
+    stringi,
+    stringr,
+    tibble
+Depends: 
+    R (>= 2.10)
