@@ -413,7 +413,7 @@ cod_mun_ibge <- treat_mun_1976 %>%
   filter(name_mun_1970 %in% treat_mun_1972$name_mun_1970) %>%
   select(name_mun_1970, cod_mun_ibge, cod_mun_ibge6, uf_2010)
 
-treat_mun_1972 %>%
+treat_mun_1972 <- treat_mun_1972 %>%
   left_join(cod_mun_ibge) %>%
   mutate(cod_mun_ibge = case_when(name_mun_1970 == 'goias' ~ 5208905,
                                   name_mun_1970 == 'niteroi' ~ 3303302,
