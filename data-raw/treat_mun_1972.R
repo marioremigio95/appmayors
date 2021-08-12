@@ -122,7 +122,7 @@ TREAT_MT_1972 <- c("Cuiabá",
                    "Corumbá",
                    "Iguatemi",
                    "Ladário",
-                   "Mato Grosso",
+                   "Vila Bela da Santíssima Trindade",
                    "Ponta Porá",
                    "Porto Murtinho",
                    "Três Lagoas")
@@ -187,7 +187,7 @@ TREAT_PR_1972 <- c("Curitiba",
                    "Guaíra",
                    "Marechal Cândido Rondon",
                    "Medianeira",
-                   "Pérola do Oeste",
+                   "Pérola d'Oeste",
                    "Planalto",
                    "Santa Helena",
                    "Santo Antônio do Sudoeste",
@@ -242,10 +242,10 @@ TREAT_RS_1972 <- c("Porto Alegre",
                    "Catuípe",
                    "Crissiumal",
                    "Dom Pedrito",
-                   "Erval",
+                   "Herval",
                    "Horizontina",
                    "Iraí",
-                   "ltaquí",
+                   "Itaquí",
                    "Jaguarão",
                    "Osório",
                    "Porto Lucena",
@@ -254,7 +254,7 @@ TREAT_RS_1972 <- c("Porto Alegre",
                    "Rio Grande",
                    "Roque Gonzales",
                    "Santa Vitória do Palmar",
-                   "Sant'Ana do Livramento",
+                   "Santana do Livramento",
                    "São Borja",
                    "São Nicolau",
                    "Tenente Portela",
@@ -263,7 +263,7 @@ TREAT_RS_1972 <- c("Porto Alegre",
                    "Tucunduva",
                    "Tuparendi",
                    "Uruguaiana",
-                   "Vicente Dutra ")
+                   "Vicente Dutra")
 
 TREAT_RS_1972_TYPE <- c("Capital", rep("ASN",3), "EH", rep("ASN", 4), "EH",
                         rep("ASN", 18), "EH")
@@ -300,7 +300,7 @@ TREAT_SC_1972 <- c("Florianópolis",
                    "Pedras Grandes",
                    "Piratuba",
                    "São José do Cedro",
-                   "São Miguel D'Oeste",
+                   "São Miguel Do Oeste",
                    "Santo Amaro da Imperatriz"
 )
 
@@ -319,14 +319,14 @@ TREAT_SP_1972 <- c("São Paulo",
                    "Amparo",
                    "Atibaia",
                    "Castilho",
-                   "Campos de Jordão",
+                   "Campos do Jordão",
                    "Cubatão",
                    "Ibirá",
                    "Lindóia",
                    "Monte Alegre do Sul",
                    "Paulínia",
                    "Poá",
-                   "Santa Bárbara do Pardo",
+                   "Águas de Santa Bárbara",
                    "Santos",
                    "São José dos Campos",
                    "São Sebastião",
@@ -406,5 +406,23 @@ treat_mun_1972 <- treat_mun_1972 %>%
   mutate(name_mun_1970 = stringr::str_to_lower(name_mun_1970),
          name_mun_1970 = stringr::str_replace_all(name_mun_1970, "-", " "),
          name_mun_1970 = stringi::stri_trans_general(name_mun_1970, "Latin-ASCII"))
+
+devtools::load_all(".")
+
+cod_mun_ibge <- treat_mun_1976 %>%
+  filter(name_mun_1970 %in% treat_mun_1972$name_mun_1970) %>%
+  select(name_mun_1970, cod_mun_ibge, cod_mun_ibge6, uf_2010)
+
+treat_mun_1972 %>%
+  left_join(cod_mun_ibge) %>%
+  mutate(cod_mun_ibge = case_when(name_mun_1970 == 'goias' ~ 5208905,
+                                  name_mun_1970 == 'niteroi' ~ 3303302,
+                                  name_mun_1970 == 'catuipe'~ 4305009,
+                                  TRUE ~ cod_mun_ibge)) %>%
+  mutate(cod_mun_ibge6 = case_when(name_mun_1970 == 'goias' ~ 520890,
+                                  name_mun_1970 == 'niteroi' ~ 330330,
+                                  name_mun_1970 == 'catuipe'~ 430500,
+                                  TRUE ~ cod_mun_ibge6))
+
 
 usethis::use_data(treat_mun_1972, overwrite = TRUE)

@@ -11,6 +11,8 @@
 ###### 1976 MUNICIPAL ELECTIONS
 ######### Data From 1976 Municipal Elections (Tribunal Superior Eleitoral):
 
+# OBS: THERE ARE MUNICIPALITIES NAMES I CORRECT FOR THE 2010 MUNICIPALITY NAME
+
 ################ ACRE: #####
 
 TREAT_AC_1976 <- c("Rio Branco", "Brasiléia", "Cruzeiro do Sul", "Feijó", "Sena Madureira",
@@ -130,7 +132,7 @@ TREAT_MT_1976 <- c("Cuiabá",
                    "Eldorado",
                    "Iguatemi",
                    "Ladário",
-                   "Mato Grosso",
+                   "Vila Bela da Santíssima Trindade",
                    "Mirassol D'Oeste",
                    "Mundo Novo",
                    "Ponta Porá",
@@ -197,7 +199,7 @@ TREAT_PR_1976 <- c("Curitiba",
                    "Guaíra",
                    "Marechal Cândido Rondon",
                    "Medianeira",
-                   "Pérola do Oeste",
+                   "Pérola d'Oeste",
                    "Planalto",
                    "Santa Helena",
                    "Santo Antônio do Sudoeste",
@@ -253,9 +255,9 @@ TREAT_RS_1976 <- c("Porto Alegre",
                    "Canoas",
                    "Crissiumal",
                    "Dom Pedrito",
-                   "Erval",
+                   "Herval",
                    "Horizontina",
-                   "ltaquí",
+                   "Itaquí",
                    "Jaguarão",
                    "Osório",
                    "Porto Lucena",
@@ -264,7 +266,7 @@ TREAT_RS_1976 <- c("Porto Alegre",
                    "Rio Grande",
                    "Roque Gonzales",
                    "Santa Vitória do Palmar",
-                   "Sant'Ana do Livramento",
+                   "Santana do Livramento",
                    "São Borja",
                    "São Nicolau",
                    "Tenente Portela",
@@ -274,7 +276,7 @@ TREAT_RS_1976 <- c("Porto Alegre",
                    "Tuparendi",
                    "Uruguaiana",
                    "Iraí",
-                   "Vicente Dutra ")
+                   "Vicente Dutra")
 
 TREAT_RS_1976_TYPE <- c("Capital", rep("ASN", 25), "EH", "EH")
 
@@ -310,7 +312,7 @@ TREAT_SC_1976 <- c("Florianópolis",
                    "Pedras Grandes",
                    "Piratuba",
                    "São José do Cedro",
-                   "São Miguel D'Oeste",
+                   "São Miguel Do Oeste",
                    "Santo Amaro da Imperatriz"
 )
 
@@ -329,14 +331,14 @@ TREAT_SP_1976 <- c("São Paulo",
                    "Amparo",
                    "Atibaia",
                    "Castilho",
-                   "Campos de Jordão",
+                   "Campos do Jordão",
                    "Cubatão",
                    "Ibirá",
                    "Lindóia",
                    "Monte Alegre do Sul",
                    "Paulínia",
                    "Poá",
-                   "Santa Bárbara do Pardo",
+                   "Águas de Santa Bárbara",
                    "Santos",
                    "São José dos Campos",
                    "São Sebastião",
@@ -416,5 +418,48 @@ treat_mun_1976 <- treat_mun_1976 %>%
   mutate(name_mun_1970 = stringr::str_to_lower(name_mun_1970),
          name_mun_1970 = stringr::str_replace_all(name_mun_1970, "-", " "),
          name_mun_1970 = stringi::stri_trans_general(name_mun_1970, "Latin-ASCII"))
+
+devtools::load_all(".")
+
+# ibge municipalites' codes
+df <- appmayors::codigos_ibge
+
+# excluding repeated municipalities names so they match with municipalities in treat_mun_1976
+cod_mun_ibge <- df %>%
+  filter(name_mun %in% treat_mun_1976$name_mun_1970) %>%
+  filter(!(cod_mun_ibge %in% c(2500734,
+                               4301800,
+                               2700805,
+                               2501906,
+                               2502151,
+                               3112000,
+                               1502202,
+                               2202505,
+                               4106704,
+                               4306205,
+                               3514809,
+                               3517406,
+                               3128204,
+                               2404853,
+                               1302009,
+                               4310900,
+                               4112405,
+                               2407807,
+                               5214051,
+                               2922102,
+                               2299919,
+                               2925006,
+                               4314704,
+                               3539608,
+                               5107206,
+                               2109809,
+                               2513307,
+                               4215554,
+                               2708808,
+                               2509370))) %>%
+  select(uf, cod_mun_ibge, cod_mun_ibge6, name_mun) %>%
+  rename(uf_2010 = uf, name_mun_1970 = name_mun)
+
+treat_mun_1976 <- inner_join(treat_mun_1976, cod_mun_ibge)
 
 usethis::use_data(treat_mun_1976, overwrite = TRUE)
