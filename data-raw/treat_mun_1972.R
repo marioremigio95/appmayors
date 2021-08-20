@@ -409,7 +409,7 @@ treat_mun_1972 <- treat_mun_1972 %>%
 
 devtools::load_all(".")
 
-cod_mun_ibge <- treat_mun_1976 %>%
+cod_mun_ibge <- appmayors::treat_mun_1976 %>%
   filter(name_mun_1970 %in% treat_mun_1972$name_mun_1970) %>%
   select(name_mun_1970, cod_mun_ibge, cod_mun_ibge6, uf_2010)
 
